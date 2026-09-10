@@ -443,22 +443,22 @@ const generatedQuestionTemplates = {
 };
 
 const questionStems = [
-  'Which statement best describes',
-  'What is the main reason to understand',
-  'Which practice correctly relates to',
-  'A cosmetologist should remember that',
-  'What is the safest approach to',
-  'Which answer best explains',
-  'During a professional service, why is it important to know about',
-  'What should a student recognize about',
-  'Which choice shows proper knowledge of',
-  'Why does',
-  'What is a key point about',
-  'Which statement about',
-  'Before a service, what should be understood about',
-  'What does good practice require for',
-  'Which option is most accurate about',
-  'What is the professional response concerning',
+  (subject) => `A client asks what ${subject} means. Which response is most accurate?`,
+  (subject) => `During a consultation, a student mentions ${subject}. What should the professional explain?`,
+  (subject) => `A new cosmetologist is preparing for a service involving ${subject}. Which step is appropriate?`,
+  (subject) => `A salon manager observes a service involving ${subject}. Which action reflects proper practice?`,
+  (subject) => `A client has a concern related to ${subject}. What is the safest response?`,
+  (subject) => `While reviewing a service record, the instructor asks about ${subject}. Which answer shows understanding?`,
+  (subject) => `A cosmetology student must choose between several procedures involving ${subject}. Which choice is correct?`,
+  (subject) => `Before beginning a service, why should the provider evaluate ${subject}?`,
+  (subject) => `A provider notices a problem while working with ${subject}. Which response follows professional standards?`,
+  (subject) => `Which result would show that the provider handled ${subject} correctly?`,
+  (subject) => `A client wants to change the plan after discussing ${subject}. What should happen next?`,
+  (subject) => `Which situation is most likely to require special care when working with ${subject}?`,
+  (subject) => `An exam question describes ${subject} in a salon setting. Which conclusion is best supported?`,
+  (subject) => `Which tool, product, or procedure would be most appropriate when addressing ${subject}?`,
+  (subject) => `A licensed professional is checking safety before a service involving ${subject}. What should be confirmed?`,
+  (subject) => `Which explanation would help a client make an informed choice about ${subject}?`,
 ];
 
 function createAdditionalQuestions() {
@@ -467,7 +467,7 @@ function createAdditionalQuestions() {
 
   Object.entries(generatedQuestionTemplates).forEach(([topic, concepts]) => {
     concepts.forEach(([subject, correctAnswer, ...wrongAnswers], conceptIndex) => {
-      questionStems.forEach((stem, stemIndex) => {
+      questionStems.forEach((createPrompt, stemIndex) => {
         const answerIndex = stemIndex % 4;
         const choices = [...wrongAnswers, 'Use an unrelated service instead', correctAnswer];
         const correctChoice = choices.pop();
@@ -476,7 +476,7 @@ function createAdditionalQuestions() {
         additionalQuestions.push({
           id,
           topic,
-          prompt: `${stem} ${subject}?`,
+          prompt: createPrompt(subject),
           choices,
           answer: answerIndex,
           explanation: `${correctAnswer}. Always apply the relevant product directions, safety procedures, and current professional rules.`,
